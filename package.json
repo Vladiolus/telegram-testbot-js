@@ -1,0 +1,14 @@
+{
+  "name": "vladiolus-testbot",
+  "version": "0.0.0",
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "wrangler": "^2.11.1"
+  },
+  "private": true,
+  "scripts": {
+    "start": "wrangler dev",
+    "deploy": "wrangler publish"
+  }
+}

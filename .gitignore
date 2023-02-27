@@ -1,0 +1,7 @@
+# Dependency directories
+
+node_modules/
+
+# Wrangler publishing configuration file
+
+wrangler.toml

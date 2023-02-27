@@ -1,17 +1,40 @@
+import readRequestBody from './modules/readRequestBody.js';
+import handleMessage from './modules/handleMessage.js';
+
 export default {
-    async fetch(request) {
-      if (request.method === "POST") {
-        const payload = request.json();
-        // Getting the POST request JSON payload
-        if ('message' in payload) { 
-          // Checking if the payload comes from Telegram
-          const chatId = payload.message.chat.id;
-          const text = "Принято: " + payload.message.text;
-          const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chatId}&text=${text}`;
-          const data = fetch(url).then(resp => resp.json());
-          // Calling the API endpoint to send a telegram message
-        }
+  // Main request handler.
+  async fetch(request, env) {
+    if (request.method === 'POST') {
+      // Telegram Bot API, answer will be sent there.
+      const url = `https://api.telegram.org/bot${env.TOKEN}/sendMessage`;
+      
+      // Getting main data from received request.
+      let requestBody = await readRequestBody(request);
+      if (!requestBody) {
+        return new Response("Only JSON format accepted.");
       }
-      return new Response("I’m a module!"); // Doesn't really matter
+      let message = requestBody.message;
+      
+      // Processing data with Bot's logic.
+      let data = handleMessage(message);
+
+      // Params for new Request object.
+      let newInit = {
+        method: 'POST',
+        body: JSON.stringify(data)
+      }
+
+      // Creating new Request object.
+      let newRequest = new Request(
+        url,
+        new Request(request, newInit)
+      )
+
+      // Sending new request.
+      return await fetch(newRequest);
+    }
+    else {
+      return new Response("Only POST requests accepted.");
     }
   }
+}
