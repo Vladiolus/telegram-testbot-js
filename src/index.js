@@ -12,6 +12,6 @@ export default {
           // Calling the API endpoint to send a telegram message
         }
       }
-      return new Response("I’m a Buratino!"); // Doesn't really matter  
+      return new Response("I’m BuraTTino, came here to destroy the entire humanity!"); // Doesn't really matter  
     }                                       //                       "Papa Karlo", 1936
   }
